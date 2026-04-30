@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ala El-Hady — Personal Budget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ───────────── NOISE OVERLAY ───────────── -->
+  <div class="noise-overlay"></div>
+
+  <!-- ───────────── AUTH SCREEN ───────────── -->
+  <div id="auth-screen" class="screen active">
+    <div class="auth-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <div class="auth-container">
+      <div class="auth-brand">
+        <div class="brand-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2z" fill="url(#brandGrad)"/>
+            <path d="M10 16h12M16 10v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7C3AED"/>
+                <stop offset="1" stop-color="#38BDF8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-name">Ala El-Hady</h1>
+          <p class="brand-tagline">Your personal budget companion</p>
+        </div>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+        <div class="tab-indicator"></div>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-panel" class="auth-panel active">
+        <p class="panel-subtitle">Welcome back. Enter your PIN to continue.</p>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="login-username" class="form-input" placeholder="your_username" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">4-Digit PIN</label>
+          <div class="pin-inputs" id="login-pin-inputs">
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+          </div>
+        </div>
+        <div id="login-error" class="form-error hidden"></div>
+        <button id="login-btn" class="btn-primary">
+          <span>Sign In</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="register-panel" class="auth-panel">
+        <p class="panel-subtitle">Create your secure budget profile.</p>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="Ala El-Hady" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="reg-username" class="form-input" placeholder="choose_a_username" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Choose a 4-Digit PIN</label>
+          <div class="pin-inputs" id="reg-pin-inputs">
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+            <input type="password" maxlength="1" class="pin-box" inputmode="numeric" pattern="[0-9]" />
+          </div>
+        </div>
+        <div id="register-error" class="form-error hidden"></div>
+        <button id="register-btn" class="btn-primary">
+          <span>Create Account</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── SETUP SCREEN ───────────── -->
+  <div id="setup-screen" class="screen">
+    <div class="setup-container">
+      <div class="setup-header">
+        <div class="setup-icon">🎯</div>
+        <h2 class="setup-title">Set Up Your Budget</h2>
+        <p class="setup-desc">Configure your allowance period to get started.</p>
+      </div>
+      <div class="setup-card">
+        <div class="form-group">
+          <label class="form-label">Total Allowance</label>
+          <div class="input-with-icon">
+            <span class="input-prefix">EGP</span>
+            <input type="number" id="setup-budget" class="form-input has-prefix" placeholder="5000" min="1" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Start Date</label>
+            <input type="date" id="setup-start" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">End Date</label>
+            <input type="date" id="setup-end" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Daily Limit Strategy</label>
+          <div class="strategy-selector">
+            <button class="strategy-btn active" data-strategy="simple">
+              <span class="strategy-title">Simple Division</span>
+              <span class="strategy-desc">Remaining ÷ Remaining Days</span>
+            </button>
+            <button class="strategy-btn" data-strategy="weighted">
+              <span class="strategy-title">Weighted (80%)</span>
+              <span class="strategy-desc">Reserve 20% as safety buffer</span>
+            </button>
+          </div>
+        </div>
+        <div id="setup-error" class="form-error hidden"></div>
+        <button id="setup-btn" class="btn-primary">
+          <span>Start Tracking</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── DASHBOARD SCREEN ───────────── -->
+  <div id="dashboard-screen" class="screen">
+
+    <!-- SIDEBAR NAV -->
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon small">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2z" fill="url(#navGrad)"/>
+            <path d="M10 16h12M16 10v12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="navGrad" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7C3AED"/>
+                <stop offset="1" stop-color="#38BDF8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="sidebar-app-name">Ala El-Hady</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link active" data-view="overview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Overview
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="expenses">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Expenses
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="insights">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Insights
+        </a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-chip">
+          <div class="user-avatar" id="user-avatar">A</div>
+          <span class="user-name" id="sidebar-username">User</span>
+        </div>
+        <button id="logout-btn" class="logout-btn" title="Logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- NOTIFICATION BANNER -->
+      <div id="notification-banner" class="notification-banner hidden">
+        <span class="notif-icon">⚠️</span>
+        <span id="notif-message">You've used 80% of your total budget!</span>
+        <button class="notif-close" id="notif-close">✕</button>
+      </div>
+
+      <!-- ── OVERVIEW VIEW ── -->
+      <div id="view-overview" class="view active">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Overview</h2>
+            <p class="view-date" id="today-date"></p>
+          </div>
+          <button class="btn-ghost" id="reset-budget-btn">Reset Budget</button>
+        </div>
+
+        <!-- STAT CARDS ROW -->
+        <div class="stats-grid">
+          <div class="stat-card highlight">
+            <div class="stat-label">Safe Daily Limit</div>
+            <div class="stat-value" id="stat-daily-limit">EGP 0</div>
+            <div class="stat-meta" id="stat-strategy-label">Simple Division</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Remaining Balance</div>
+            <div class="stat-value" id="stat-remaining">EGP 0</div>
+            <div class="stat-meta" id="stat-days-left">0 days left</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Spent</div>
+            <div class="stat-value" id="stat-spent">EGP 0</div>
+            <div class="stat-meta" id="stat-total-budget">of EGP 0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Today's Spending</div>
+            <div class="stat-value" id="stat-today-spent">EGP 0</div>
+            <div class="stat-meta" id="stat-rollover">Rollover: EGP 0</div>
+          </div>
+        </div>
+
+        <!-- BUDGET PROGRESS -->
+        <div class="section-card">
+          <div class="section-header">
+            <h3 class="section-title">Budget Progress</h3>
+            <span class="section-badge" id="budget-pct-badge">0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="budget-progress-bar"></div>
+          </div>
+          <div class="progress-labels">
+            <span>EGP 0 spent</span>
+            <span id="progress-label-right">EGP 0 total</span>
+          </div>
+        </div>
+
+        <!-- QUICK ADD EXPENSE -->
+        <div class="section-card">
+          <h3 class="section-title">Quick Add Expense</h3>
+          <div class="quick-add-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Amount (EGP)</label>
+                <input type="number" id="exp-amount" class="form-input" placeholder="150" min="0.01" step="0.01" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="exp-category" class="form-input">
+                  <option value="Food">🍔 Food</option>
+                  <option value="Transport">🚌 Transport</option>
+                  <option value="Shopping">🛍️ Shopping</option>
+                  <option value="Entertainment">🎬 Entertainment</option>
+                  <option value="Health">💊 Health</option>
+                  <option value="Bills">💡 Bills</option>
+                  <option value="Education">📚 Education</option>
+                  <option value="Other">📦 Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Note (optional)</label>
+              <input type="text" id="exp-note" class="form-input" placeholder="Lunch at work…" />
+            </div>
+            <div id="expense-error" class="form-error hidden"></div>
+            <button id="add-expense-btn" class="btn-primary">
+              <span>Log Expense</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- RECENT EXPENSES -->
+        <div class="section-card">
+          <h3 class="section-title">Recent Expenses</h3>
+          <div id="recent-expenses-list" class="expense-list">
+            <div class="empty-state">No expenses logged yet.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPENSES VIEW ── -->
+      <div id="view-expenses" class="view">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">All Expenses</h2>
+            <p class="view-date" id="expense-count-label">0 transactions</p>
+          </div>
+          <div class="filter-row">
+            <select id="filter-category" class="form-input small">
+              <option value="all">All Categories</option>
+              <option value="Food">🍔 Food</option>
+              <option value="Transport">🚌 Transport</option>
+              <option value="Shopping">🛍️ Shopping</option>
+              <option value="Entertainment">🎬 Entertainment</option>
+              <option value="Health">💊 Health</option>
+              <option value="Bills">💡 Bills</option>
+              <option value="Education">📚 Education</option>
+              <option value="Other">📦 Other</option>
+            </select>
+          </div>
+        </div>
+        <div id="all-expenses-list" class="expense-list full"></div>
+      </div>
+
+      <!-- ── INSIGHTS VIEW ── -->
+      <div id="view-insights" class="view">
+        <div class="view-header">
+          <div>
+            <h2 class="view-title">Insights</h2>
+            <p class="view-date">Spending breakdown by category</p>
+          </div>
+        </div>
+
+        <div class="insights-grid">
+          <!-- Category Breakdown -->
+          <div class="section-card">
+            <h3 class="section-title">By Category</h3>
+            <div id="category-breakdown" class="category-breakdown"></div>
+          </div>
+
+          <!-- Daily Spending Chart -->
+          <div class="section-card">
+            <h3 class="section-title">Daily Spending (Last 7 Days)</h3>
+            <div id="daily-chart" class="daily-chart"></div>
+          </div>
+        </div>
+
+        <!-- Timeline progress -->
+        <div class="section-card">
+          <h3 class="section-title">Budget Period Timeline</h3>
+          <div class="timeline-bar-wrap">
+            <div class="timeline-bar-track">
+              <div class="timeline-bar-fill" id="timeline-bar"></div>
+              <div class="timeline-marker" id="timeline-today-marker" title="Today"></div>
+            </div>
+            <div class="timeline-labels">
+              <span id="timeline-start-label">—</span>
+              <span id="timeline-today-label">Today</span>
+              <span id="timeline-end-label">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ───────────── TOAST ───────────── -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-message"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
